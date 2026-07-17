@@ -1,0 +1,50 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore DotRMediator.slnx
+
+      - name: Test
+        run: dotnet test DotRMediator.slnx --no-restore -c Release
+
+      - name: Pack
+        run: |
+          dotnet pack src/DotRMediator/DotRMediator.csproj \
+            -c Release \
+            --no-restore \
+            -o ./artifacts
+
+      - name: NuGet login (Trusted Publishing)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: refatorainformatica
+
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push ./artifacts/*.nupkg \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
