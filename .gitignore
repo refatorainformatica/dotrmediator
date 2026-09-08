@@ -427,3 +427,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# AI Engineering Harness (ephemeral)
+.ai-harness/Runtime/state/runs/
+.ai-harness/Runtime/sandbox/worktrees/
+.ai-harness/Runtime/state/CURRENT

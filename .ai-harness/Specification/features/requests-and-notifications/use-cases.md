@@ -1,0 +1,8 @@
+# Use Cases — requests-and-notifications
+
+## UC-01 — Fluxo principal
+
+- **Actor:** usuário / sistema
+- **Given** contexto válido e regra: Requests, commands, queries, and events
+- **When** a ação principal de `requests-and-notifications` é executada
+- **Then** o comportamento descrito no README/código é respeitado sem violar Governance
